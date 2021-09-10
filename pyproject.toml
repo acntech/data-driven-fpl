@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "fpl"
+version = "0.1.0"
+description = "A data driven approach to fantasy football"
+authors = ["Your Name <you@example.com>"]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.9.2"
+pylint = "^2.10.2"
+pytest = "^6.2.5"
+black = "^21.8b0"
+isort = "^5.9.3"
+coverage = "^5.5"
+pre-commit = "^2.15.0"
+pydocstyle = "^6.1.1"
+
+[tool.poetry.scripts]
+fantasy = "fpl.main:start_script"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
