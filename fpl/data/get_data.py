@@ -3,14 +3,14 @@ import os
 from pathlib import Path
 
 from azure.storage.blob import ContainerClient
-from dotenv import load_dotenv
 from tqdm import tqdm
 
-# Load environmental variables from .env it it exist or use default value.
-load_dotenv()
+# Load environmental variables if it exist or use default value.
 STORAGE_ACCOUNT = os.getenv(
     "STORAGE_ACCOUNT_URL", "https://martinfplstats1337.blob.core.windows.net/"
 )
+
+print(os.getenv("STORAGE_ACCOUNT_URL", None))
 
 
 def download_all(container_name: str, data_dir_path="data/raw"):
