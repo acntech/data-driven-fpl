@@ -29,4 +29,3 @@ fantasy = "fpl.__main__:start_script"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-

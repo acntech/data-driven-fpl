@@ -36,10 +36,7 @@ def download_all(container_name: str, data_dir_path="data/raw"):
     blobs_to_download = [blob for blob in blobs if blob not in files_on_disk]
 
     # Download all new blobs and write to disk.
-    for blob in tqdm(
-        blobs_to_download,
-        desc="Downloading new blobs",
-    ):
+    for blob in tqdm(blobs_to_download, desc="Downloading new blobs"):
         with open(Path(download_path, blob), "w", encoding="utf8") as file:
             data = container_client.get_blob_client(blob=blob).download_blob().readall()
             file.write(data.decode("utf-8"))
