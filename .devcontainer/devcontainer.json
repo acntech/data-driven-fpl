@@ -13,31 +13,7 @@
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"python.pythonPath": "/usr/local/bin/python",
-		"python.defaultInterpreterPath": "/usr/local/bin/python",
-		"python.sortImports.args": [
-			"-rc",
-			"-sp isort.cfg"
-		],
-		"[python]": {
-			"editor.codeActionsOnSave": {
-				"source.organizeImports": true
-			}
-		},
-		"python.linting.flake8Enabled": true,
-		"python.linting.pylintEnabled": true,
-		"python.linting.pydocstyleEnabled": true,
-		"files.trimTrailingWhitespace": true,
-		"python.linting.pylintUseMinimalCheckers": false,
-		"editor.formatOnSave": true,
-		"python.linting.enabled": true,
-		"python.formatting.provider": "black",
-		"python.formatting.blackArgs": [
-			"--line-length",
-			"100"
-		],
-		"editor.rulers": [
-			100
-		]
+		"python.defaultInterpreterPath": "/usr/local/bin/python"
 	},
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
