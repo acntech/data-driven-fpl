@@ -2,9 +2,10 @@
 from pathlib import Path
 
 from azure.storage.blob import ContainerClient
+from progress.bar import Bar
 from tqdm import tqdm
 
-from fpl.utils import config, paths
+from fpl.utils import configs, paths
 
 
 class BlobImporter:
@@ -22,21 +23,29 @@ class BlobImporter:
                 from config directory.
         """
         if config_file_path is None:
-            self.__config_file_path = paths.get_config_file_path()
-        self.__config = config.get_config(self.__config_file_path)
+            config_file_path = paths.get_config_file_path()
+        self.__config_file_path = config_file_path
+        self.__config = configs.get_config(self.__config_file_path)
+
         if raw_data_path is None:
-            self.__raw_data_path = paths.get_raw_data_path()
+            raw_data_path = paths.get_raw_data_path()
+        self.__raw_data_path = raw_data_path
 
     def download_all_blobs_in_container(self):
         """Download all blobs in configured container to raw data directory."""
-        connection_string = self.__config["azure"]["STORAGE_ACCOUNT_URL"]
+        storage_account_url = self.__config["azure"]["STORAGE_ACCOUNT_URL"]
         container_name = self.__config["azure"]["FPL_2021_CONTAINER"]
-        container = ContainerClient.from_container_url(connection_string + "/" + container_name)
-        blob_list = [blob["name"] for blob in container.list_blobs()]
+        container_client = ContainerClient.from_container_url(
+            storage_account_url + "/" + container_name
+        )
+        blob_list = [blob["name"] for blob in container_client.list_blobs()]
         existing_files = [f.name for f in self.__raw_data_path.iterdir() if ".json" in f.name]
         blobs_to_download = [blob for blob in blob_list if blob not in existing_files]
 
-        for blob in tqdm(blobs_to_download, desc=f"Downloading blobs from {container_name}"):
+        bar = Bar(f"Downloading blobs from {container_name}", max=len(blobs_to_download))
+        for blob in blobs_to_download:
             with open(Path(self.__raw_data_path, blob), "w", encoding="utf8") as file:
-                data = container.get_blob_client(blob=blob).download_blob().readall()
+                data = container_client.get_blob_client(blob=blob).download_blob().readall()
                 file.write(data.decode("utf-8"))
+                bar.next()
+        bar.finish()
