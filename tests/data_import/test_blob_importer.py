@@ -20,12 +20,13 @@ class TestBlobImporter:
             mock_config_path : Path
                 Mocked config path.
         """
+        mock_blob_name = "mock_blob.json"
         mock_container_client = mocker.patch(
             "fpl.data_import.blob_importer.ContainerClient.from_container_url"
         )
         mock_list_blobs = mocker.patch(
             "fpl.data_import.blob_importer.ContainerClient.from_container_url.list_blobs",
-            return_value=[{"name": "mock_blob.json"}],
+            return_value=[{"name": mock_blob_name}],
         )
         mock_download_blob = mocker.patch(
             "fpl.data_import.blob_importer.ContainerClient.from_container_url.get_blob_client.download_blob.readall",
@@ -48,3 +49,5 @@ class TestBlobImporter:
         mock_list_blobs.assert_called_once()
         mock_download_blob.assert_called_once()
         assert mock_container_client.call_args.args[0] == expected_container_url
+        downloaded_files = [f.name for f in tmp_path.iterdir() if ".json" in f.name]
+        assert downloaded_files == [mock_blob_name]
