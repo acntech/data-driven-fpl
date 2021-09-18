@@ -3,7 +3,6 @@ from pathlib import Path
 
 from azure.storage.blob import ContainerClient
 from progress.bar import Bar
-from tqdm import tqdm
 
 from fpl.utils import configs, paths
 
