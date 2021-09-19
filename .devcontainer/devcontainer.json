@@ -29,5 +29,10 @@
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "poetry config virtualenvs.create false && poetry env use system && poetry install",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	"mounts": [
+		// For multipe containers, source should have a unique value to prohibit bugs across OS/env
+		// setups. Else volume will be shared across containers.
+		"source=unique-vol-name-here,target=/home/vscode/.vscode-server/extensions,type=volume",
+	]
 }
