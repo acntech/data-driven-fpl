@@ -8,7 +8,5 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 ARG USERNAME=vscode
 
 RUN mkdir -p /home/$USERNAME/.vscode-server/extensions \
-    /home/$USERNAME/.vscode-server-insiders/extensions \
     && chown -R $USERNAME \
     /home/$USERNAME/.vscode-server \
-    /home/$USERNAME/.vscode-server-insiders
