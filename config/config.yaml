@@ -1,4 +1,3 @@
 azure:
   STORAGE_ACCOUNT_URL: "https://martinfplstats1337.blob.core.windows.net/"
-  FPL_2020_CONTAINER: "2020-fpl-data"
-  FPL_2021_CONTAINER: "2021-fpl-data"
+  STORAGE_CONTAINERS: ["2020-fpl-data", "2021-fpl-data"]

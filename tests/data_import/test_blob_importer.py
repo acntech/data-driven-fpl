@@ -9,7 +9,7 @@ class TestBlobImporter:
     """Test class for BlobImporter."""
 
     @staticmethod
-    def test_download_all_blobs_in_container(tmp_path, mocker, mock_config_path):
+    def test_download_blobs_in_containers(tmp_path, mocker, mock_config_path):
         """Tests BlobImporter.download_all_blobs_in_container.
 
         Args:
@@ -37,17 +37,13 @@ class TestBlobImporter:
         mock_container_client.return_value.get_blob_client.return_value.download_blob.return_value.readall = (
             mock_download_blob
         )
+        mock_config = configs.get_config(mock_config_path)
 
-        config = configs.get_config(mock_config_path)
-        expected_container_url = (
-            config["azure"]["STORAGE_ACCOUNT_URL"] + "/" + config["azure"]["FPL_2021_CONTAINER"]
-        )
         blob_importer = BlobImporter(config_file_path=mock_config_path, raw_data_path=tmp_path)
-        blob_importer.download_all_blobs_in_container()
+        blob_importer.download_blobs_in_containers()
 
-        mock_container_client.assert_called_once()
-        mock_list_blobs.assert_called_once()
-        mock_download_blob.assert_called_once()
-        assert mock_container_client.call_args.args[0] == expected_container_url
+        mock_container_client.assert_called() == len(mock_config["azure"]["STORAGE_CONTAINERS"])
+        mock_list_blobs.assert_called() == len(mock_config["azure"]["STORAGE_CONTAINERS"])
+        mock_download_blob.assert_called() == len(mock_config["azure"]["STORAGE_CONTAINERS"])
         downloaded_files = [f.name for f in tmp_path.iterdir() if ".json" in f.name]
         assert downloaded_files == [mock_blob_name]

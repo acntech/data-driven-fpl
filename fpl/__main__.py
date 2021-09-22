@@ -6,7 +6,7 @@ from fpl.data_import.blob_importer import BlobImporter
 def start_script():
     """Demo only."""
     blob_import = BlobImporter()
-    blob_import.download_all_blobs_in_container()
+    blob_import.download_blobs_in_containers()
     print(__version__)
 
 
