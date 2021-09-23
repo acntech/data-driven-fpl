@@ -13,28 +13,26 @@
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"python.pythonPath": "/usr/local/bin/python",
-		"python.languageServer": "Pylance",
-		"python.linting.enabled": true,
-		"python.linting.pylintEnabled": true,
-		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
-		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-		"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
-		"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
-		"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
-		"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
-		"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
-		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
-		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint"
+		"python.defaultInterpreterPath": "/usr/local/bin/python"
 	},
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.python",
-		"ms-python.vscode-pylance"
+		"njpwerner.autodocstring",
+		"mhutchie.git-graph",
+		"gruntfuggly.todo-tree"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [
+		8888
+	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "poetry install",
+	"postCreateCommand": "sh .devcontainer/postCreateCommand.sh",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	"mounts": [
+		// For multipe containers, source should have a unique value to prohibit bugs across OS/env
+		// setups. Else volume will be shared across containers.
+		"source=unique-vol-name-here,target=/home/vscode/.vscode-server/extensions,type=volume",
+	]
 }
