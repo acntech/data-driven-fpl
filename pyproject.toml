@@ -6,10 +6,11 @@ authors = ["Your Name <you@example.com>"]
 license = "Apache-2.0"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = ">=3.9,<3.11"
 PyYAML = "^5.4.1"
 azure-storage-blob = "^12.8.1"
 progress = "^1.6"
+
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"
@@ -20,6 +21,9 @@ isort = "^5.9.3"
 coverage = "^5.5"
 pre-commit = "^2.15.0"
 pydocstyle = "^6.1.1"
+notebook = "^6.4.3"
+jupytext = "^1.12.0"
+jupyter-contrib-nbextensions = "^0.5.1"
 
 [tool.poetry.scripts]
 fantasy = "fpl.__main__:start_script"
