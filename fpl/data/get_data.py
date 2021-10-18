@@ -1,19 +1,11 @@
 """Download data from Azure."""
-import os
 from pathlib import Path
 
 from azure.storage.blob import ContainerClient
 from tqdm import tqdm
 
-# Load environmental variables if it exist or use default value.
-STORAGE_ACCOUNT = os.getenv(
-    "STORAGE_ACCOUNT_URL", "https://martinfplstats1337.blob.core.windows.net/"
-)
 
-print(os.getenv("STORAGE_ACCOUNT_URL", None))
-
-
-def download_all(container_name: str, data_dir_path="data/raw"):
+def download_all(storage_account_url: str, container_name: str, data_dir_path="data/raw"):
     """Download all new blobs to disk.
 
     Args:
@@ -21,7 +13,9 @@ def download_all(container_name: str, data_dir_path="data/raw"):
         data_dir_path (str, optional): Path to download directory. Defaults to "data/raw".
     """
     # Connect to the container
-    container_client = ContainerClient.from_container_url(STORAGE_ACCOUNT + "/" + container_name)
+    container_client = ContainerClient.from_container_url(
+        storage_account_url + "/" + container_name
+    )
 
     download_path = Path(data_dir_path, container_name)
     download_path.mkdir(parents=True, exist_ok=True)
