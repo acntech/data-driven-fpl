@@ -18,8 +18,20 @@ def download():
 
 
 @data.command(name="to-csv", help="Convert JSON to CSV")
-def to_csv():
+@click.option(
+    "--data-dir",
+    "-d",
+    type=click.Path(exists=True),
+    default="data/raw/2021-fpl-data",
+    help="Path to data-dir to transform",
+)
+@click.option(
+    "--entity",
+    "-e",
+    type=click.Choice(["elements", "teams"], case_sensitive=False),
+    default="elements",
+    help="Transform either elements or teams to CSV",
+)
+def to_csv(data_dir, entity):
     """Convert to CSV."""
-    # TODO: Add entry to start convertion of json to CSV from command line
-    # CLI must support change of source directory and the entities "teams" and "elements"
-    print("FILL INN LOGIC!")
+    json_to_csv(data_dir, entity)
