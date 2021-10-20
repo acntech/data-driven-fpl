@@ -1,0 +1,101 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/product.schema.json",
+    "title": "DataTypes",
+    "description": "A product from Acme's catalog",
+    "type": "object",
+    "properties": {
+        "elements": {
+            "type": "object",
+            "patternProperties": {
+                ".+": {
+                    "$ref": "#/definitions/element_property"
+                }
+            }
+        },
+        "teams": {
+            "type": "object",
+            "patternProperties": {
+                ".+": {
+                    "$ref": "#/definitions/element_property"
+                }
+            }
+        },
+        "fixtures": {
+            "type": "object",
+            "patternProperties": {
+                ".+": {
+                    "$ref": "#/definitions/element_property"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "element_property": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "Short description of what the data means",
+                    "member_region": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                },
+                "notes": {
+                    "description": "Extensive explanation of interpertation of data",
+                    "member_region": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                },
+                "dtype": {
+                    "description": "Type of the data",
+                    "enum": [
+                        "string",
+                        "integer",
+                        "float",
+                        "boolean",
+                        "datetime",
+                        null
+                    ]
+                },
+                "type": {
+                    "description": "What is measured",
+                    "enum": [
+                        "continuous",
+                        "discrete",
+                        "ordinal",
+                        "nominal",
+                        "other",
+                        null
+                    ]
+                },
+                "calculated": {
+                    "description": "How data is measured",
+                    "enum": [
+                        "snapshot",
+                        "cumulative_sum",
+                        "static",
+                        "average",
+                        "percentage",
+                        "ratio",
+                        null
+                    ]
+                },
+                "action": {
+                    "description": "What to do with data",
+                    "enum": [
+                        "keep",
+                        "drop",
+                        "engineer",
+                        null
+                    ]
+                }
+            }
+        }
+    }
+}

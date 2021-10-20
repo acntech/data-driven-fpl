@@ -2,10 +2,15 @@
 name = "fpl"
 version = "0.1.0"
 description = "A data driven approach to fantasy football"
-authors = ["Your Name <you@example.com>"]
+authors = ["AI Champions"]
 license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/acntech/data-driven-fpl"
 
 [tool.poetry.dependencies]
+azure-storage-blob = "^12.8.1"
+python-dotenv = "^0.19.0"
+tqdm = "^4.62.2"
 python = ">=3.9,<3.11"
 PyYAML = "^5.4.1"
 azure-storage-blob = "^12.8.1"

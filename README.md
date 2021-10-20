@@ -35,7 +35,7 @@ GOAL: Create a python-repo and download data!
 
 ```python
 # To connect to data storage
-STORAGE_ACCOUNT_URL= "https://martinfplstats1337.blob.core.windows.net/"  
+STORAGE_ACCOUNT_URL= "https://martinfplstats1337.blob.core.windows.net/"
 FPL_2020_CONTAINER= "2020-fpl-data"
 FPL_2021_CONTAINER = "2021-fpl-data"
 ```
