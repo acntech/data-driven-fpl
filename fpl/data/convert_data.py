@@ -1,10 +1,14 @@
 """Convert data to CSV."""
 
+import json
 from pathlib import Path
+
+import pandas as pd
+from tqdm import tqdm
 
 
 def _get_game_week(data: dict) -> int:
-    """Get the gameweek from a data dump.
+    """Get the gameweek from a events list.
 
     Args:
         data (dict): data dict.
@@ -23,28 +27,35 @@ def json_to_csv(data_dir: str, entity: str):
         data_dir (str): Path to dir holding JSON dumps of Fantasy Premier League.
         entity (str): Either "elements" or "teams".
     """
-
-    # Getting all .json files from data_dir
     data_dir = Path(data_dir)
     files = sorted([file for file in data_dir.iterdir() if file.suffix == ".json"])
 
-    # Creating path to interrim file
+    # Creating path to interim file
     interim_path = Path("data", "interim", data_dir.name + "_" + entity)
     interim_path = interim_path.with_suffix(".csv")
     interim_path.parent.mkdir(exist_ok=True)
+    for i, path in enumerate(tqdm(files, desc="Loading CSV")):
+        try:
+            with open(path, encoding="utf-8") as file:
+                data = json.load(file)
+                gameweek = _get_game_week(data)
+                list(
+                    map(
+                        lambda x, data=data, gameweek=gameweek: x.update(
+                            {
+                                "download_time": data["download_time"],
+                                "gameweek": gameweek,
+                            }
+                        ),
+                        data[entity],
+                    )
+                )
+            dataframe = pd.DataFrame(data[entity])
+            dataframe.to_csv(
+                interim_path, mode="w" if i == 0 else "a", index=False, header=(i == 0)
+            )
 
-    # TODO: Fill in logic that can be described with the following pseudocode:
-    #
-    # for each file in files
-    #   open file and load json
-    #   for each element in entity
-    #       append download_time and gameweek
-    #   write the enity to CSV
-    #
-    # Useful functions are:
-    #  1. open() -> https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files
-    #  2. json.load() -> https://docs.python.org/3/library/json.html
-    #  3. map() ->
-    #  https://realpython.com/python-map-function/#using-map-with-different-kinds-of-functions
-    #  4. Pandas.DataFrame.to_csv ->
-    #  https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html
+        except TypeError:
+            print(f"Something is wrong in file {path}")
+        except json.JSONDecodeError:
+            print(f"Something is wrong with JSON formatting in file {path}")
