@@ -83,12 +83,6 @@ data_desc["elements"]["code"]["notes"] = "What is the difference between code an
 data_desc["elements"]["code"]
 ```
 
-```python
-# We save our notes back to our json.
-with open("../data_desc/data_desc.json", "w") as file:
-    json.dump(data_desc, file, indent=4, ensure_ascii=False)
-```
-
 ## Loading our data
 
 We start by loading our newly converted CSVs for teams and elements. We also wanna have a look at what fixtures are all about.
@@ -153,9 +147,287 @@ def add_target_value(df, target="minutes", window=5, is_cumsum=False):
 elements_2020_grouped = elements_2020_df.groupby(by=["code", "gameweek"], as_index=False).last()
 
 # We calculcate our target value and look if it makes sense for one player.
-add_target_value(elements_2020_grouped, target="minutes", window=2, is_cumsum=True)[elements_2020_grouped.web_name=="Salah"]
+add_target_value(elements_2020_grouped, target="event_points", window=2, is_cumsum=False)[elements_2020_grouped.web_name=="Salah"]
+```
+
+## There are no right and wrong answers here.
+There are no right or wrong answers here.
+
+
+### Columns to drop!
+Are there any columns that we should not care about from the get-go?
+
+```python
+def is_na(df, entity):
+    # Update all columns that contain only NaN to {action:"drop"}
+    for column in df.columns[df.isna().all()].tolist():
+        data_desc[entity][column].update({"action": "drop"})
+
+is_na(elements_2020_df, "elements")
+is_na(teams_2020_df, "teams")
+is_na(fixtures_2020_df, "fixtures")
+
+# We inspect team!
+data_desc["teams"]
+```
+
+### Dtypes are almost for free!
+We fill out our dtypes as they might help us with further understanding/filtering
+
+```python
+# Lets populate data_desc with something that we know - data types (int, float, string, etc.)
+def _fix_dtype_name(name):
+    """Return name of pandas dtype."""
+    if name == "int64":
+        return "integer"
+    elif name == "float64":
+        return "float"
+    elif name == "object":
+        return "string"
+    elif name == "bool":
+        return "boolean"
+    else:
+        return name
+
+def _check_float(column):
+    """Check if column in fact is float."""
+    try:
+        if column.fillna(0).apply(lambda x: x % 1 == 0).all():
+            return "integer"
+        return "float"
+    except TypeError:
+        return None
+
+def update_dtypes(df, entity):
+    for column in df.columns:
+        dtype = _fix_dtype_name(df[column].dtype.name)
+        if dtype == "float":
+            dtype = _check_float(df[column])
+        data_desc[entity][column].update({"dtype": dtype})
+
+# We update our data_desc with data types
+update_dtypes(elements_2020_df, "elements")
+update_dtypes(teams_2020_df, "teams")
+update_dtypes(fixtures_2020_df, "fixtures")
+
+# We then inspect total_points from elements
+data_desc["elements"]["total_points"]
 ```
 
 ```python
+# We find the number unique values for every variable in our dataset and store it in a separete df.
+# We also filter out columns we dont care about, either those we decided to drop or already have a type!
+# We could flip the filter and only look at columns we want to keep.
 
+def _filter(df, entity):
+    return df[[key for key, element in data_desc[entity].items() if element["type"] == None and element["action"] != "drop"]]
+
+unique_values = _filter(elements_2020_df.nunique(), "elements")
+```
+
+## Looking for interesting variables
+
+Since the amount of variables is massive we have a look at variables that correlate with our selected target variable. In this case we have chosen to try to predict future event_points.
+
+Lets have a look!
+
+```python
+# We add a target variable which is the total event_points that a player gets in the upcomming N gameweeks.
+elements_2020_grouped = add_target_value(elements_2020_grouped, "event_points", window=2)
+```
+
+```python
+# We then calculate the correlation of elements and sort based on which variables correlate with our target
+corr = elements_2020_grouped[[key for key, data in data_desc["elements"].items() if data["action"] != "drop" and data["dtype"] not in ["string", "boolean"]]+ ["target"]].corr()
+corr.sort_values(by="target")["target"]
+```
+
+```python
+# We can also display the correlation matrix!
+import numpy as np
+
+# Generate a mask for the upper triangle
+mask = np.triu(np.ones_like(corr, dtype=bool))
+
+# Set up the matplotlib figure
+f, ax = plt.subplots(figsize=(22, 18))
+
+# Generate a custom diverging colormap
+cmap = sns.diverging_palette(230, 20, as_cmap=True)
+
+# Draw the heatmap with the mask and correct aspect ratio
+sns.heatmap(corr, mask=mask, cmap=cmap, vmax=1., center=0,
+            square=True, linewidths=.5, cbar_kws={"shrink": .5})
+```
+
+### There are some serious correlations here!
+Let at least keep some of the variables no matter what. Those are candidates to start to investigate in detail!
+
+```python
+# We store the most promising variables in keep and update
+keep = corr[(corr["target"] > 0.30) | (corr["target"] < -0.30)]["target"].index.tolist()
+keep.pop() #aaaand remember to remove target
+
+# Then update our data_desc
+for variable in keep:
+    data_desc["elements"][variable]["action"] = "keep"
+
+
+```
+
+## Looking for nominal variables
+
+We try to identify nominal (categorical) variables in our data set. Things to look for:
+1. Variables with a limited number of unique values
+2. Variables that are categorical but not ranked
+3. Unique identifiers are considered nominal
+
+```python
+# We update our data_description with our findings
+nominal_columns = [
+    "code",
+    "element_type",
+    "first_name",
+    "id",
+    "in_dreamteam",
+    "second_name",
+    "special",
+    "status",
+    "team",
+    "team_code",
+    "web_name"]
+
+for column in nominal_columns:
+    data_desc["elements"][column].update({"type": "nominal"})
+```
+
+## Looking for ordinal variables
+
+This time we look for categorical columns that are ranked. Things to look for:
+1. Variables with the same number of unique values as a unique identifier (ie. same or close to as "code")
+2. Usually integers, but can be strings (HIGH, MEDIUM LOW)
+4. If rank or order is in the variable name its a tell 😉
+
+```python
+ordinal_columns = [
+    "chance_of_playing_next_round",
+    "chance_of_playing_this_round",
+    "corners_and_indirect_freekicks_order",
+    "direct_freekicks_order",
+    "penalties_order",
+    "threat_rank",
+    "influence_rank",
+    "creativity_rank",
+    "threat_rank",
+    "ict_index_rank",
+    "influence_rank_type",
+     "creativity_rank_type",
+     "threat_rank_type",
+     "ict_index_rank_type",
+     "gameweek",
+     "download_time"
+]
+
+for column in ordinal_columns:
+    data_desc["elements"][column].update({"type": "ordinal"})
+```
+
+### Looking for discrete variables
+
+We now look for discrete variables. These are numerical variables that seems to be a count of some sort.
+We can look for:
+
+1. Values that seems to be counted
+2. Values that with dtype integear and cannot be divided into smaller pieces.
+
+```python
+discrete_columns = [
+    "cost_change_event",
+    "cost_change_event_fall",
+    "cost_change_start",
+    "cost_change_start_fall",
+    "dreamteam_count",
+    "event_points",
+    "now_cost",
+    "total_points",
+    "transfers_in",
+    "transfers_in_event",
+    "transfers_out",
+    "transfers_out_event",
+    "minutes",
+    "goals_scored",
+    "assists",
+    "clean_sheets",
+    "goals_conceded",
+    "own_goals",
+    "penalties_saved",
+    "penalties_missed",
+    "yellow_cards",
+    "red_cards",
+    "saves",
+    "bonus",
+    "bps",
+
+]
+for column in discrete_columns:
+    data_desc["elements"][column].update({"type": "discrete"})
+```
+
+### Looking for continuous variables
+We look for data that we can not count, only measure!
+Look out for:
+
+* Variables that can hold an unlimited amount of different values
+* Variables with dtype float could be a tell
+* Interval data (i.e temperature)
+    * No true zero
+* Ratio data (i.e height)
+    * Has a true zero
+
+
+```python
+continuous_columns = ["ep_next",
+                      "ep_this",
+                      "form",
+                      "points_per_game",
+                      "selected_by_percent",
+                      "value_form",
+                      "value_season",
+                      "influence",
+                      "creativity",
+                      "threat",
+                      "ict_index",
+]
+for column in continuous_columns:
+    data_desc["elements"][column].update({"type": "continuous"})
+```
+
+## Identifying how data is calculated
+
+One thing to look for is assumptions of how the data is measured/updated/calculated. In this section we try to understand how our data are measured. Are we looking at:
+
+* Snapshot (either as gameweek or download-time as time point)
+* Cumulative sum (untill now this season)
+* Averages
+* Fractions, percentage or some sort of ratio
+
+There is no easy way of doing this other than:
+1. Ask the SME/domain expert.
+2. Investigate the data
+3. Guess!
+
+```python
+# We can inspect a variable in detail and observe change over time.
+elements_2020_grouped[elements_2020_grouped.web_name == "Salah"]["value_form"]
+```
+
+```python
+# Here is a visualization of the same. Include more players if needed.
+sns.lineplot(data=elements_2020_grouped[elements_2020_grouped.web_name.isin(["Salah", "Werner"]) ], x="gameweek", y="value_form")
+```
+
+```python
+# We save our notes back to our json.
+with open("../data_desc/data_desc.json", "w") as file:
+    json.dump(data_desc, file, indent=4, ensure_ascii=False)
 ```
