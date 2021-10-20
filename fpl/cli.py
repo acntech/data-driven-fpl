@@ -1,7 +1,7 @@
 """Cli module."""
 import click
 
-from fpl.data import BlobImporter
+from fpl.data import BlobImporter, json_to_csv
 
 
 @click.group()
