@@ -1,7 +1,7 @@
 """Module for testing BlobImporter."""
 import pytest
 
-from fpl.data_import.blob_importer import BlobImporter
+from fpl.data.blob_importer import BlobImporter
 from fpl.utils import configs
 
 
@@ -22,14 +22,14 @@ class TestBlobImporter:
         """
         mock_blob_name = "mock_blob.json"
         mock_container_client = mocker.patch(
-            "fpl.data_import.blob_importer.ContainerClient.from_container_url"
+            "fpl.data.blob_importer.ContainerClient.from_container_url"
         )
         mock_list_blobs = mocker.patch(
-            "fpl.data_import.blob_importer.ContainerClient.from_container_url.list_blobs",
+            "fpl.data.blob_importer.ContainerClient.from_container_url.list_blobs",
             return_value=[{"name": mock_blob_name}],
         )
         mock_download_blob = mocker.patch(
-            "fpl.data_import.blob_importer.ContainerClient.from_container_url.get_blob_client.download_blob.readall",
+            "fpl.data.blob_importer.ContainerClient.from_container_url.get_blob_client.download_blob.readall",
             return_value=b"mock_blob_content",
         )
 
@@ -45,5 +45,7 @@ class TestBlobImporter:
         mock_container_client.assert_called() == len(mock_config["azure"]["STORAGE_CONTAINERS"])
         mock_list_blobs.assert_called() == len(mock_config["azure"]["STORAGE_CONTAINERS"])
         mock_download_blob.assert_called() == len(mock_config["azure"]["STORAGE_CONTAINERS"])
-        downloaded_files = [f.name for f in tmp_path.iterdir() if ".json" in f.name]
-        assert downloaded_files == [mock_blob_name]
+
+        # Rewrite to recurively test that each dir in data/raw holds a json.
+        downloaded_files = [f.name for f in tmp_path.glob("**/*") if ".json" in f.name]
+        assert downloaded_files == [f"{mock_blob_name}" for i in range(len(downloaded_files))]

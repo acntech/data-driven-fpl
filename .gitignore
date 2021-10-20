@@ -128,5 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Data files
-data/**
+# Ignore the content of data dir.
+# but keep folder structure by manually adding .gitkeep to version control
+# find . -name '.gitkeep' | xargs git add -f
+/data/**
+
+# Ignore ipython notebooks (only check in .md through jupytext)
+*.ipynb

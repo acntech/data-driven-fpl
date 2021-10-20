@@ -35,16 +35,19 @@ class BlobImporter:
         storage_account_url = self.__config["azure"]["STORAGE_ACCOUNT_URL"]
         container_names = self.__config["azure"]["STORAGE_CONTAINERS"]
         for container_name in container_names:
+            data_path = Path(self.__raw_data_path, container_name)
+            data_path.mkdir(parents=True, exist_ok=True)
+
             container_client = ContainerClient.from_container_url(
                 storage_account_url + "/" + container_name
             )
             blob_list = [blob["name"] for blob in container_client.list_blobs()]
-            existing_files = [f.name for f in self.__raw_data_path.iterdir() if ".json" in f.name]
+            existing_files = [f.name for f in data_path.iterdir() if ".json" in f.name]
             blobs_to_download = [blob for blob in blob_list if blob not in existing_files]
 
             blob_bar = Bar(f"Downloading blobs from {container_name}", max=len(blobs_to_download))
             for blob in blobs_to_download:
-                with open(Path(self.__raw_data_path, blob), "w", encoding="utf8") as file:
+                with open(Path(data_path, blob), "w", encoding="utf8") as file:
                     data = container_client.get_blob_client(blob=blob).download_blob().readall()
                     file.write(data.decode("utf-8"))
                     blob_bar.next()

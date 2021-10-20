@@ -1,33 +1,20 @@
 """Cli module."""
-import os
-
 import click
 
-from fpl.data import download_all
-
-# Load environmental variables if it exist or use default value.
-STORAGE_ACCOUNT = os.getenv(
-    "STORAGE_ACCOUNT_URL", "https://martinfplstats1337.blob.core.windows.net/"
-)
+from fpl.data import BlobImporter
 
 
 @click.group()
 def data():
     """CLI group."""
-    print(f"Using storage account {STORAGE_ACCOUNT}")
+    print("This is the command group of data operations!")
 
 
 @data.command(name="download", help="Download all new blobs from container.")
-@click.option(
-    "--container",
-    "-c",
-    type=click.STRING,
-    help="Name of container to download from",
-    default="2021-fpl-data",
-)
-def download(container):
+def download():
     """Download all blobs."""
-    download_all(STORAGE_ACCOUNT, container)
+    blob_import = BlobImporter()
+    blob_import.download_blobs_in_containers()
 
 
 @data.command(name="to-csv", help="Convert JSON to CSV")
