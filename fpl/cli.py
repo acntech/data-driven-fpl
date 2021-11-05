@@ -1,7 +1,7 @@
 """Cli module."""
 import click
 
-from fpl.data import BlobImporter, json_to_csv
+from fpl.data import BlobImporter, DataConverter
 
 
 @click.group()
@@ -17,7 +17,7 @@ def download():
     blob_import.download_blobs_in_containers()
 
 
-@data.command(name="to-csv", help="Convert JSON to CSV")
+@data.command(name="csv_on_entity", help="Class to extract desired CSV files")
 @click.option(
     "--data-dir",
     "-d",
@@ -30,8 +30,9 @@ def download():
     "-e",
     type=click.Choice(["elements", "teams"], case_sensitive=False),
     default="elements",
-    help="Transform either elements or teams to CSV",
+    help="Transform elements, phases or teams to CSV",
 )
-def to_csv(data_dir, entity):
+def csv_on_entity(data_dir, entity):
     """Convert to CSV."""
-    json_to_csv(data_dir, entity)
+    data_converter = DataConverter(data_dir, entity)
+    data_converter.convert_json_to_csv_on_entity()

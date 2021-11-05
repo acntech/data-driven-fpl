@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - wp-2-startpoint-anine-data
 
 jobs:
   run-tests:
