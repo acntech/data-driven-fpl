@@ -52,7 +52,7 @@ git checkout wp-2-startpoint-minimal
 git checkout wp-2-startpoint-anine
 ```
 1. Create a function that extract either "teams" or "elements" from all .JSON files in a directory and store the resulting table as a .CSV file.
-    * Write the function in ```fpl/data/convert_data.py```
+    * Write the function in ```fpl/data/data_converter_class.py```
     * Each record in the table must be appended with ```gameweek``` and ```download_time```. The function to extract value for current gameweek is provided.
     * The CSV-file must be saved in ```data/interim/YYYY-fpl-data_entity.csv```. For example a csv-table of _elements_ from ```data/raw/2020-fpl-data``` should be stored as ```data/interim/2020-fpl-data_elements.csv```
 2. Utilize [Click](https://www.palletsprojects.com/p/click/) to create an interface to run our convertion functions from the CLI
