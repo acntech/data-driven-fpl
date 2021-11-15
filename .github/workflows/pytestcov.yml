@@ -31,4 +31,10 @@ jobs:
         run: poetry run coverage run -m pytest
 
       - name: Run coverage
-        run: poetry run coverage report
+        run: poetry run coverage xml
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          name: fpl-timeseries-data
+          fail_ci_if_error: true
