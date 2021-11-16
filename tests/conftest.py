@@ -17,8 +17,8 @@ def fixture_mock_config_path(tmp_path):
     config_file_path = Path(tmp_path).joinpath("test_config.yaml")
     config_file = {
         "azure": {
-            "STORAGE_ACCOUNT_URL": "https://martinfplstats1337.blob.core.windows.net/",
-            "STORAGE_CONTAINERS": ["2020-fpl-data", "2021-fpl-data"],
+            "STORAGE_ACCOUNT_URL": "https://mock-url.net/",
+            "STORAGE_CONTAINERS": ["container1", "container2"],
         }
     }
 

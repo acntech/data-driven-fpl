@@ -2,7 +2,7 @@
 from pathlib import Path
 
 from azure.storage.blob import ContainerClient
-from progress.bar import Bar
+from tqdm import tqdm
 
 from fpl.utils import configs, paths
 
@@ -45,10 +45,9 @@ class BlobImporter:
             existing_files = [f.name for f in data_path.iterdir() if ".json" in f.name]
             blobs_to_download = [blob for blob in blob_list if blob not in existing_files]
 
-            blob_bar = Bar(f"Downloading blobs from {container_name}", max=len(blobs_to_download))
-            for blob in blobs_to_download:
+            for blob in tqdm(
+                blobs_to_download, desc=f"Downloading new blobs from {container_name}"
+            ):
                 with open(Path(data_path, blob), "w", encoding="utf8") as file:
                     data = container_client.get_blob_client(blob=blob).download_blob().readall()
                     file.write(data.decode("utf-8"))
-                    blob_bar.next()
-            blob_bar.finish()
