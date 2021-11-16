@@ -28,7 +28,7 @@ def download():
 @click.option(
     "--entity",
     "-e",
-    type=click.Choice(["elements", "teams"], case_sensitive=False),
+    type=click.Choice(["elements", "teams", "fixtures"], case_sensitive=False),
     default="elements",
     help="Transform elements, phases or teams to CSV",
 )
