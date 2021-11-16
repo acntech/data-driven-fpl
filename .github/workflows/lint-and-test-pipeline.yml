@@ -1,0 +1,85 @@
+name: Run pre-commit and publish coverage
+
+on: [push, pull_request]
+
+env:
+  python-version: 3.8
+  poetry-version: 1.1.11
+
+jobs:
+  run-lint:
+    name: Run pre-commits
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@master
+        with:
+          python-version: ${{ env.python-version }}
+
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: ${{ env.poetry-version }}
+
+      - uses: actions/cache@v2
+        id: dependency-check
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python dependencies
+        if: steps.dependency-check.outputs.cache-hit != 'true'
+        run: |
+          poetry install
+
+      - name: Run pre-commit
+        run: poetry run pre-commit run --all-files
+
+  run-tests:
+    name: Run and publish test coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@master
+        with:
+          python-version: ${{ env.python-version }}
+
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: ${{ env.poetry-version }}
+
+      - uses: actions/cache@v2
+        id: dependency-check
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install python dependencies
+        if: steps.dependency-check.outputs.cache-hit != 'true'
+        run: poetry install
+
+      - name: Run pytest
+        run: poetry run coverage run -m pytest
+
+      - name: Run coverage
+        run: poetry run coverage xml
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          name: fpl-timeseries-data
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
