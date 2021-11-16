@@ -1,0 +1,874 @@
+{
+    "$schema": "./data_desc_schema.json",
+    "line_endings": "unix",
+    "elements": {
+        "chance_of_playing_next_round": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "chance_of_playing_this_round": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "code": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "cost_change_event": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "cost_change_event_fall": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "cost_change_start": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "cost_change_start_fall": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "dreamteam_count": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "element_type": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "ep_next": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "ep_this": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "event_points": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "first_name": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "form": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "id": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "in_dreamteam": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "news": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "news_added": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "now_cost": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "photo": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "points_per_game": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "second_name": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "selected_by_percent": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "special": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "squad_number": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "status": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team_code": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "total_points": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "transfers_in": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "transfers_in_event": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "transfers_out": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "transfers_out_event": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "value_form": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "value_season": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "web_name": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "minutes": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "goals_scored": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "assists": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "clean_sheets": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "goals_conceded": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "own_goals": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "penalties_saved": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "penalties_missed": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "yellow_cards": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "red_cards": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "saves": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "bonus": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "bps": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "influence": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "creativity": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "threat": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "ict_index": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "influence_rank": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "influence_rank_type": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "creativity_rank": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "creativity_rank_type": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "threat_rank": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "threat_rank_type": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "ict_index_rank": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "ict_index_rank_type": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "corners_and_indirect_freekicks_order": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "corners_and_indirect_freekicks_text": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "direct_freekicks_order": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "direct_freekicks_text": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "penalties_order": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "penalties_text": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "download_time": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "gameweek": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        }
+    },
+    "teams": {
+        "code": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "draw": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "form": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "id": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "loss": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "name": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "played": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "points": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "position": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "short_name": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "strength": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team_division": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "unavailable": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "win": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "strength_overall_home": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "strength_overall_away": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "strength_attack_home": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "strength_attack_away": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "strength_defence_home": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "strength_defence_away": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "pulse_id": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "download_time": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "gameweek": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        }
+    },
+    "fixtures": {
+        "code": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "event": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "finished": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "finished_provisional": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "id": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "kickoff_time": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "minutes": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "provisional_start_time": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "started": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "stats": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team_a": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team_a_difficulty": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team_a_score": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team_h": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team_h_difficulty": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        },
+        "team_h_score": {
+            "description": null,
+            "type": null,
+            "dtype": null,
+            "calculated": null,
+            "action": null,
+            "notes": null
+        }
+    }
+}
