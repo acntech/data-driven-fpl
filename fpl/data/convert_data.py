@@ -1,5 +1,4 @@
 """Convert data to CSV."""
-
 import json
 from pathlib import Path
 
@@ -42,10 +41,7 @@ def json_to_csv(data_dir: str, entity: str):
                 list(
                     map(
                         lambda x, data=data, gameweek=gameweek: x.update(
-                            {
-                                "download_time": data["download_time"],
-                                "gameweek": gameweek,
-                            }
+                            {"download_time": data["download_time"], "gameweek": gameweek}
                         ),
                         data[entity],
                     )

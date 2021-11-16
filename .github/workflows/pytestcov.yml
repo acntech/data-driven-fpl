@@ -1,10 +1,6 @@
 name: Pytest with code coverage
 
-on:
-  pull_request:
-    branches:
-      - main
-      - wp-2-startpoint-anine-data
+on: pull_request
 
 jobs:
   run-tests:
