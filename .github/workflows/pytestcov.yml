@@ -1,10 +1,6 @@
 name: Pytest with code coverage
 
-on:
-  pull_request:
-    branches:
-      - main
-      - wp-2-startpoint-anine-data
+on: pull_request
 
 jobs:
   run-tests:
@@ -31,4 +27,11 @@ jobs:
         run: poetry run coverage run -m pytest
 
       - name: Run coverage
-        run: poetry run coverage report
+        run: poetry run coverage xml
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          name: fpl-timeseries-data
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
