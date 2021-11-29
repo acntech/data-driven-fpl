@@ -21,3 +21,4 @@ echo 'c.NotebookApp.contents_manager_class = "jupytext.TextFileContentsManager"'
 which jupyter
 jupyter nbextension install --py jupytext --user
 jupyter nbextension enable jupytext --user --py
+pre-commit install
