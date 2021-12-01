@@ -1,5 +1,5 @@
 {
-    "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
     "python.sortImports.args": [
         "-rc",
         "-sp isort.cfg"

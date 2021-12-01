@@ -1,14 +1,14 @@
 """Module for testing DataConverter class."""
-import pytest
 from pathlib import Path
-import pandas as pd
 
-from fpl.data.data_converter_class import DataConverter
+import pandas as pd
+import pytest
+
+from fpl.data import DataConverter
 
 
 class TestDataConverter:
-    """Tests for DataConverter class with test data.
-    """
+    """Tests for DataConverter class with test data."""
 
     data_dir = "test_data/test_raw"
     main_data_folder = "test_data"
@@ -18,7 +18,6 @@ class TestDataConverter:
         expected_interim_file_name = Path(TestDataConverter.data_dir).name + "_" + entity
         return Path("test_data", "test_interim", expected_interim_file_name).with_suffix(".csv")
 
-
     @staticmethod
     def test_convert_json_to_csv_on_elements():
         """Test convertion json to csv on entity."""
@@ -27,8 +26,12 @@ class TestDataConverter:
 
         expected_interim_file_path = TestDataConverter.generate_expected_interim_file_path(entity)
 
-        data_converter = DataConverter(TestDataConverter.data_dir, entity, \
-            TestDataConverter.main_data_folder, TestDataConverter.main_interim_folder)
+        data_converter = DataConverter(
+            TestDataConverter.data_dir,
+            entity,
+            TestDataConverter.main_data_folder,
+            TestDataConverter.main_interim_folder,
+        )
 
         data_converter.convert_json_to_csv_on_entity()
 
@@ -38,7 +41,6 @@ class TestDataConverter:
         assert not interim_result_csv_file_df.empty
 
         expected_interim_file_path.unlink()
-
 
     @staticmethod
     def test_convert_json_to_csv_on_phases():
@@ -48,8 +50,12 @@ class TestDataConverter:
 
         expected_interim_file_path = TestDataConverter.generate_expected_interim_file_path(entity)
 
-        data_converter = DataConverter(TestDataConverter.data_dir, entity, \
-            TestDataConverter.main_data_folder, TestDataConverter.main_interim_folder)
+        data_converter = DataConverter(
+            TestDataConverter.data_dir,
+            entity,
+            TestDataConverter.main_data_folder,
+            TestDataConverter.main_interim_folder,
+        )
 
         data_converter.convert_json_to_csv_on_entity()
 
@@ -60,7 +66,6 @@ class TestDataConverter:
 
         expected_interim_file_path.unlink()
 
-
     @staticmethod
     def test_convert_json_to_csv_on_teams():
         """Test convertion json to csv on entity."""
@@ -69,8 +74,12 @@ class TestDataConverter:
 
         expected_interim_file_path = TestDataConverter.generate_expected_interim_file_path(entity)
 
-        data_converter = DataConverter(TestDataConverter.data_dir, entity, \
-            TestDataConverter.main_data_folder, TestDataConverter.main_interim_folder)
+        data_converter = DataConverter(
+            TestDataConverter.data_dir,
+            entity,
+            TestDataConverter.main_data_folder,
+            TestDataConverter.main_interim_folder,
+        )
 
         data_converter.convert_json_to_csv_on_entity()
 
