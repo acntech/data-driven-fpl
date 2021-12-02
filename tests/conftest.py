@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 
+import pandas as pd
 import pytest
 import yaml
 
@@ -26,3 +27,13 @@ def fixture_mock_config_path(tmp_path):
         yaml.dump(config_file, file)
 
     return config_file_path
+
+
+@pytest.fixture
+def elements_df():
+    return pd.read_csv("test_data/test_interim/test_elements.csv")
+
+
+@pytest.fixture
+def teams_df():
+    return pd.read_csv("test_data/test_interim/test_teams.csv")

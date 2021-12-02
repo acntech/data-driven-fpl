@@ -60,21 +60,31 @@ print(f"Filtered columns: {df_filtered.memory_usage().sum()//10**6} mb")
 
 ```python
 @timer
-def transform_dataset(path_to_parquet, codes=None):
+def transform_dataset(path_to_parquet, codes=None, teams_df=None):
     if not codes:
         codes = pd.read_parquet(path_to_parquet, columns=["code"], partitioning=["team_code", "code"])
-    for i, code in enumerate(tqdm(df_selected["code"].unique()[:1])):
+    for i, code in enumerate(tqdm(df_selected["code"].unique())):
         df = pd.read_parquet(path_to_parquet, filters=[('code', '=', 98747)], partitioning=["team_code","code"])
-        df_g = df.groupby(by=["code", "gameweek"]).last()
-
+        df_g = df.groupby(by=["code", "gameweek"], as_index=False).last()
         # Before transformation
-        print(df_g["minutes"])
-        print(type(df_g["minutes"]))
-
+        df_g.loc[:, "minutes"] = calculate_diff(df_g["minutes"])
+        df_g = join_elements_and_team(df_g, teams_df)
         # After transformation
-        print(calculate_diff(df_g["minutes"]))
 ```
 
 ```python
-transform_dataset("../data/interim/2020_elements_parquet/")
+@timer
+def join_elements_and_team(elements_df, teams_df):
+    elements_df = elements_df.groupby(by=["code", "gameweek"], as_index=False).last()
+    teams_df = teams_df.groupby(by=["code", "gameweek"], as_index=False).last()
+    return elements_df.join(teams_df.set_index(["code", "gameweek"]), on=["team_code", "gameweek"], rsuffix="_team")
+
+```
+
+```python
+teams_df = get_data("../data/interim/2021_teams_parquet/")
+```
+
+```python
+
 ```

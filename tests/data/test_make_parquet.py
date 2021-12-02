@@ -16,16 +16,16 @@ def test_to_parquet(tmpdir):
     to_parquet(
         "test_data/test_interim/test_elements.csv",
         str(tmpdir) + "/test_parquet",
-        partition_cols=["code"],
-        chunk_size=500,
+        partition_cols=["team_code"],
+        chunk_size=1200,
     )
 
     # Assert number of partition folders is the same as number of unique id's in dataset.
-    assert len(os.listdir(parquet_path)) == 527
+    assert len(os.listdir(parquet_path)) == 2
 
     # Assert that there are two chunks as the CSV is read in two chunks.
     assert os.listdir(next(parquet_path.iterdir())) == ["chunk_0_0", "chunk_1_0"]
 
     # Assert that "code" is found in dataframe and contains 527 unique values
     temp_df = pd.read_parquet(parquet_path)
-    assert temp_df["code"].nunique() == 527
+    assert temp_df["team_code"].nunique() == 2
