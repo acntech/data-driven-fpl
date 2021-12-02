@@ -3,7 +3,6 @@
 import pandas as pd
 import pyarrow as pa
 import pyarrow.dataset as ds
-import pyarrow.parquet as pq
 from tqdm import tqdm
 
 
@@ -20,19 +19,20 @@ def to_parquet(path: str, output_path: str, chunk_size=300000, partition_cols=No
 
     for y, chunk in enumerate(tqdm(pd.read_csv(path, chunksize=chunk_size), total=num_lines)):
         table = pa.Table.from_pandas(chunk)
-        pa.dataset.write_dataset(
+        ds.write_dataset(
             table,
             output_path,
             basename_template=f"chunk_{y}_{{i}}",
             format="parquet",
             partitioning=partition_cols,
             existing_data_behavior="overwrite_or_ignore",
+            partitioning_flavor="hive",
         )
 
 
 if __name__ == "__main__":
     to_parquet(
-        "data/interim/2020-fpl-data_elements.csv",
-        "data/interim/2020_elements_parquet",
+        "data/interim/2021-fpl-data_elements.csv",
+        "data/interim/2021_elements_parquet",
         partition_cols=["team_code", "code"],
     )

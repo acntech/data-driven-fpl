@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.13.0
+      jupytext_version: 1.13.2
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -17,6 +17,7 @@ jupyter:
 import pandas as pd
 import time
 from tqdm import tqdm
+from fpl.transform.transformations import calculate_diff
 ```
 
 ```python
@@ -37,16 +38,16 @@ def timer(func):
 
 @timer
 def get_data(*args, **kwargs):
-    return pd.read_parquet(*args, partitioning=["team_code", "code"], **kwargs)
+    return pd.read_parquet(*args, **kwargs)
 ```
 
 ```python
 # Illustrate speed difference between different reads
 read_csv = timer(pd.read_csv)
-df_csv = read_csv("../data/interim/2020-fpl-data_elements.csv")
-df_all = get_data("../data/interim/2020_elements_parquet/")
-df_selected = get_data("../data/interim/2020_elements_parquet/", columns=["code", "gameweek", "minutes", "event_points"])
-df_filtered = get_data("../data/interim/2020_elements_parquet/", filters=[('code', '=', 98747)])
+df_csv = read_csv("../data/interim/2021-fpl-data_elements.csv")
+df_all = get_data("../data/interim/2021_elements_parquet/")
+df_selected = get_data("../data/interim/2021_elements_parquet/", columns=["code", "gameweek", "minutes", "event_points"])
+df_filtered = get_data("../data/interim/2021_elements_parquet/", filters=[('code', '=', 98747)])
 ```
 
 ```python
@@ -76,13 +77,4 @@ def transform_dataset(path_to_parquet, codes=None):
 
 ```python
 transform_dataset("../data/interim/2020_elements_parquet/")
-```
-
-```python
-
-
-```
-
-```python
-
 ```
