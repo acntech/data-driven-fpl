@@ -17,6 +17,7 @@ def test_calculate_diff(elements_df):
 
 def test_join_elements_and_team(elements_df, teams_df):
     """Test the join transformation."""
+    elements_df = elements_df.groupby(by=["code", "gameweek"], as_index=False).last()
     test_df = join_elements_and_team(elements_df=elements_df, teams_df=teams_df)
 
     # Assert that num elements has not changed
