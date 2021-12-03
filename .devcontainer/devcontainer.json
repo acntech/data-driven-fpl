@@ -42,5 +42,8 @@
 		// For multipe containers, source should have a unique value to prohibit bugs across OS/env
 		// setups. Else volume will be shared across containers.
 		"source=unique-vol-name-here,target=/home/vscode/.vscode-server/extensions,type=volume",
-	]
+	],
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:/home/vscode/.local/bin",
+	}
 }
