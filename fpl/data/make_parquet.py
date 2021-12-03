@@ -40,6 +40,23 @@ def csv_to_parquet(path: str, output_path: str, chunk_size=300000, partition_col
         write_df_to_dataset(chunk, output_path, partition_columns=partition_columns)
 
 
+def get_parquet(path: str, columns=None, filter=None):
+    """Get dataframe from parquet.
+
+    Args:
+        path (str):
+        columns (list, optional): Holds name of columns to read out from dataset. Defaults to None.
+        filter (tupple, optional): Holds  key, value to filter on. Defaults to None.
+
+    Returns:
+        pandas.core.frame.DataFrame: Returns dataset as dataframe
+    """
+    if filter:
+        filter = ds.field(filter[0]) == filter[1]
+    dataset = ds.dataset(path, format="parquet", partitioning="hive")
+    return dataset.to_table(filter=filter, columns=columns).to_pandas()
+
+
 if __name__ == "__main__":
     csv_to_parquet(
         "data/interim/2020-fpl-data_teams.csv",
