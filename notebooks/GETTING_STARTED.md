@@ -106,7 +106,7 @@ elements_2020_df = pd.read_csv("../data/interim/2020-fpl-data_elements.csv")
 teams_2020_df = pd.read_csv("../data/interim/2020-fpl-data_teams.csv")
 
 # We also grab one dump of fixtures
-with open("../data/raw/2020-fpl-fixtures/2020-09-12T10-24-34Z.json") as file:
+with open("../data/raw/2020-fpl-fixtures/2020-09-14T00-00-00Z_data.json") as file:
     fixtures = json.load(file)
     fixtures_2020_df = pd.DataFrame(fixtures["fixtures"])
 ```

@@ -22,7 +22,7 @@ def download():
     "--data-dir",
     "-d",
     type=click.Path(exists=True),
-    default="data/raw/2021-fpl-data",
+    default="data/raw/2020-fpl-data",
     help="Path to data-dir to transform",
 )
 @click.option(
@@ -34,5 +34,5 @@ def download():
 )
 def csv_on_entity(data_dir, entity):
     """Convert to CSV."""
-    data_converter = DataConverter(data_dir, entity)
+    data_converter = DataConverter(entity=entity, raw_data_path=data_dir)
     data_converter.convert_json_to_csv_on_entity()

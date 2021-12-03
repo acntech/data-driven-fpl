@@ -34,6 +34,16 @@ def get_raw_data_path():
     return get_data_path().joinpath("raw")
 
 
+def get_interim_data_path():
+    """Return absolute path to the interim data directory.
+
+    Returns:
+        Path
+            The path to the interim data directory.
+    """
+    return get_data_path().joinpath("interim")
+
+
 def get_config_file_path():
     """Return the absolute path to the config file.
 
