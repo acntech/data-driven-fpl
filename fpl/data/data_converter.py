@@ -1,33 +1,38 @@
 """Convert data to CSV."""
 import json
 from pathlib import Path
-from tqdm import tqdm
+
 import pandas as pd
+from tqdm import tqdm
+
+from fpl.utils import paths
 
 
 class DataConverter:
     """Data converter class."""
 
-    def __init__(
-        self, data_dir: str, entity: str, main_data_folder="data", main_interim_folder="interim"
-    ):
+    def __init__(self, entity: str, raw_data_path=None, interim_data_path=None):
         """Set configuration parameters.
 
         Args:
-            data_dir (str): Path to dir holding JSON dumps of Fantasy Premier League.
             entity (str): Either "elements" or "teams".
+            raw_data_path (Path, optional): Path to dir holding JSON dumps of raw data.
+            interim_data_path (Path, optional): Path to dir for uploading converted data.
         """
-        self.data_dir = Path(data_dir)
         self.entity = entity
-        self.interim_folder_path = Path(main_data_folder, main_interim_folder)
-        self.interim_folder_entity_path = Path(
-            self.interim_folder_path, self.data_dir.name + "_" + self.entity
+        if raw_data_path is None:
+            raw_data_path = paths.get_raw_data_path()
+        self.__raw_data_path = Path(raw_data_path)
+        if interim_data_path is None:
+            interim_data_path = paths.get_interim_data_path()
+        self.__interim_data_path = Path(interim_data_path)
+        self._interim_data_entity_path = Path(
+            self.__interim_data_path, self.__raw_data_path.name + "_" + self.entity
         ).with_suffix(".csv")
 
-    def make_interim_folder_if_absent(self):
-        """Generate interim folder if non-existant.
-        """
-        self.interim_folder_entity_path.parent.mkdir(exist_ok=True)
+    def _make_interim_folder_if_absent(self):
+        """Generate interim folder if non-existant."""
+        self._interim_data_entity_path.parent.mkdir(exist_ok=True)
 
     def _get_game_week(self, data: dict) -> int:
         """Get the gameweek from an events list.
@@ -49,9 +54,9 @@ class DataConverter:
             entity (str): Either "elements" or "teams".
         """
 
-        files = sorted([file for file in self.data_dir.iterdir() if file.suffix == ".json"])
+        files = sorted([file for file in self.__raw_data_path.iterdir() if file.suffix == ".json"])
 
-        self.make_interim_folder_if_absent()
+        self._make_interim_folder_if_absent()
 
         for i, path in enumerate(tqdm(files, desc="Loading CSV")):
             try:
@@ -68,13 +73,13 @@ class DataConverter:
                     )
                 dataframe = pd.DataFrame(data[self.entity])
                 dataframe.to_csv(
-                    self.interim_folder_entity_path,
+                    self._interim_data_entity_path,
                     mode="w" if i == 0 else "a",
                     index=False,
                     header=(i == 0),
                 )
 
-            except TypeError:
-                print(f"Something is wrong in file {path}")
+            except TypeError as e:
+                print(f"Something is wrong in file {path}:", e)
             except json.JSONDecodeError:
                 print(f"Something is wrong with JSON formatting in file {path}")

@@ -19,12 +19,12 @@
             "notes": null
         },
         "code": {
-            "description": null,
-            "type": null,
-            "dtype": null,
-            "calculated": null,
-            "action": null,
-            "notes": null
+            "description": "Unique identifier for each player",
+            "type": "nominal",
+            "dtype": "integer",
+            "calculated": "static",
+            "action": "keep",
+            "notes": "What is the difference between code and id?"
         },
         "cost_change_event": {
             "description": null,
