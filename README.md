@@ -1,4 +1,5 @@
 [![codecov](https://codecov.io/gh/acntech/data-driven-fpl/branch/main/graph/badge.svg?token=VLY920KXJV)](https://codecov.io/gh/acntech/data-driven-fpl)
+[![Run pre-commit and publish coverage](https://github.com/acntech/data-driven-fpl/actions/workflows/lint-and-test-pipeline.yml/badge.svg?branch=main)](https://github.com/acntech/data-driven-fpl/actions/workflows/lint-and-test-pipeline.yml)
 # **The data-driven FPL miniproject**
 [**Table of content**](#the-data-driven-fpl-miniproject)
 - [**The data-driven FPL miniproject**](#the-data-driven-fpl-miniproject)
