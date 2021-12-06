@@ -47,13 +47,8 @@ class DataConverter:
         return gameweek[0]["id"] if gameweek else 0
 
     def convert_json_to_csv_on_entity(self):
-        """Convert multiple JSON into csv according to selected entity.
-
-        Args:
-            data_dir (str): Path to dir holding JSON dumps of Fantasy Premier League.
-            entity (str): Either "elements" or "teams".
-        """
-        files = sorted([file for file in self.__raw_data_path.iterdir() if file.suffix == ".json"])
+        """Convert multiple JSON into csv according to selected entity."""
+        files = sorted([file for file in self.__raw_data_path.rglob("*") if file.suffix == ".json"])
 
         self._make_interim_folder_if_absent()
 
