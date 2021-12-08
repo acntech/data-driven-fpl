@@ -4,15 +4,14 @@ from fpl.transform.transformations import calculate_diff, join_elements_and_team
 
 def test_calculate_diff(elements_df):
     """Test calculate diff."""
-    elements_df_g = elements_df.groupby(by=["code", "gameweek"]).last()
-    salah = elements_df_g.loc[elements_df_g.web_name == "Salah"]
-    diff = calculate_diff(salah["minutes"]).tolist()
+    elements_df_g = elements_df.groupby(by=["code", "gameweek"], as_index=False).last()
+    diff = calculate_diff(elements_df_g, ["minutes"])
 
     # Check that minutes are never over 2 * 90 minutes
-    for minutes in diff[1:]:
-        assert minutes <= 180
+    assert (diff[diff.gameweek != 0]["minutes"] <= 270).all()
+
     # Check that the returned series matches 0-38 gameweeks
-    assert len(diff) == 39
+    assert len(diff) == 78
 
 
 def test_join_elements_and_team(elements_df, teams_df):

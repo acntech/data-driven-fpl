@@ -95,7 +95,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "keep",
             "notes": null
         },
         "first_name": {
@@ -223,7 +223,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "keep",
             "notes": null
         },
         "total_points": {
@@ -231,7 +231,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "engineer",
             "notes": null
         },
         "transfers_in": {
@@ -287,7 +287,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "keep",
             "notes": null
         },
         "minutes": {
@@ -295,7 +295,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "engineer",
             "notes": null
         },
         "goals_scored": {
@@ -423,7 +423,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "engineer",
             "notes": null
         },
         "influence_rank": {
@@ -561,7 +561,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "keep",
             "notes": null
         },
         "draw": {
@@ -641,7 +641,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "keep",
             "notes": null
         },
         "team_division": {
@@ -737,7 +737,7 @@
             "type": null,
             "dtype": null,
             "calculated": null,
-            "action": null,
+            "action": "keep",
             "notes": null
         }
     },

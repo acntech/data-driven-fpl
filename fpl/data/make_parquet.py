@@ -8,9 +8,21 @@ import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 from tqdm import tqdm
 
+from fpl.utils.helpers import timer
 
-def write_df_to_dataset(df, output_path, partition_columns=None):
-    table = pa.Table.from_pandas(df)
+
+@timer
+def write_df_to_dataset(
+    dataframe: pd.core.frame.DataFrame, output_path: str, partition_columns=None
+):
+    """Write dataframe to parquet dataset.
+
+    Args:
+        df (pd.core.frame.DataFrame): Dataframe to write to dataset.
+        output_path (str): Path to dataset root dir.
+        partition_columns (list, optional): Columns to partition the dataset on. Defaults to None.
+    """
+    table = pa.Table.from_pandas(dataframe)
     ds.write_dataset(
         table,
         output_path,
@@ -22,6 +34,7 @@ def write_df_to_dataset(df, output_path, partition_columns=None):
     )
 
 
+@timer
 def csv_to_parquet(path: str, output_path: str, chunk_size=300000, partition_columns=None):
     """Convert CSV to parquet.
 
@@ -40,6 +53,7 @@ def csv_to_parquet(path: str, output_path: str, chunk_size=300000, partition_col
         write_df_to_dataset(chunk, output_path, partition_columns=partition_columns)
 
 
+@timer
 def get_parquet(path: str, columns=None, filter=None):
     """Get dataframe from parquet.
 

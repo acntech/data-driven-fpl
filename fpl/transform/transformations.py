@@ -1,18 +1,46 @@
 """Transformations module."""
 
+import pandas as pd
 
-def calculate_diff(series):
-    """Return the diff for a cumuliative column.
+
+def calculate_diff(df_grouped: pd.core.frame.DataFrame, columns: list):
+    """Calculate the difference between cumulative columns on gameweek level.
 
     Args:
-        series (pandas.core.series.Series): Series to calculate diff on.
+        df_grouped (pd.core.frame.DataFrame): DF that contains at least "code" and "gameweek"
+        columns (list): Columns to calculate diff on.
 
     Returns:
-        pandas.core.series.Series: Series that diff is calculated on.
+        pd.core.frame.DataFrame: Dataframe with diff calculated in place.
     """
-    series = series.copy()
-    series.iloc[1:] = series.iloc[1:].diff().fillna(series.iloc[1:])
-    return series
+    try:
+        columns.remove("code")
+    except ValueError:
+        pass
+
+    df_g = df_grouped.groupby(by=["code", "gameweek"], as_index=False).last()
+    df_g.loc[df_g.gameweek != 0, columns] = (
+        df_g[df_g.gameweek != 0][columns.copy() + ["code"]].groupby(by="code").diff().fillna(df_g)
+    )
+    return df_g
+
+
+def add_target_value(dataframe, target="minutes", window=5):
+    """Add a target value ahead in time.
+
+    Args:
+        df (pandas.DataFrame): grouped elements or teams df
+        target (str, optional): Name of variable to create target from
+        window (int, optional): Number of future records to generate target from
+    Returns:
+        df: df with appended target column
+    """
+    dataframe.loc[::-1, "target"] = (
+        dataframe.iloc[::-1]
+        .groupby("code")[target]
+        .apply(lambda x: x.rolling(min_periods=1, window=window).sum().shift(1))
+    )
+    return dataframe
 
 
 def join_elements_and_team(elements_df, teams_df):
