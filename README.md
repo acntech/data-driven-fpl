@@ -77,3 +77,60 @@ git checkout wp-2-startpoint-anine-data
         * fixtures
     * Select and describe the variables you find most important
     * Store the results in ```data_desc/data_desc.json```
+
+
+## **Waypoint 3: Transforming our dataset**
+This waypoint is all about transforming and wrangling our dataset. However - due to the size of the dataset we need to be smart about how we work with the data. As of now the dataset _do_ fit in memory. But with a evergrowing dataset this might change. The data also needs to be prepared for macchine learning - and we need to make use of learnt lessons from the previous waypoint to ready the dataset for learning.
+
+**Todays goal is the following:**
+
+* Explore different ways to transform our dataset to make it ready for machine learning
+* Understand how to work with a "large" dataset without loading all of it into memory.
+
+**Get started by checking out the code!**
+```bash
+git checkout wp-3-start # No help
+git checkout wp-3-transform # Converting to parquet is done for you!
+git checkout wp-3-solution # I just wanna look at a minimum solution.
+```
+
+
+
+### **Tasks**
+#### **Part 1. - Splitting up the dataset and store as parquet.**
+This task consist of converting our dataset to a more managable format - parquet. Parquet is nice because
+it:
+* Allows for quicker read speeds
+* Allows to load only parts of the dataset when needed.
+
+We are going to work with [```pandas```](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) and [```pyarrow```](https://arrow.apache.org/docs/python/dataset.html) to convert our dataset. To complete this task do the following:
+
+1. Implement a function in [```fpl/data/make_parquet.py```](fpl/data/make_parquet.py) that
+    1. reads a csv from disk to memory chunk by chunk.
+    2. Each chunk is written to a parquet dataset before the next chunk is loaded
+    3. Has a smart partitioning of the parquet dataset to optimize for read speed in the transformation step.
+2. Write a nice cli entry point to invoke tranformation to parquet in [```fpl/cli.py```](fpl/cli.py) that:
+    1. Lets users specify input csv file. Default value ```data/interim/raw_elements.csv```
+    2. Lets users  specify output of parquet. Default value ```data/interim/elements_parquet```
+    3. Lets user specify partition columns.
+    4. Exits the program if a parquet dataset already exist, can be overridden by passing ```--force```
+3. Implement tests to test:
+    1. converting csv to parquet
+    2. invoking the CLI without triggering the "csv to parquet" function.
+
+#### **Part 2. - Transforming our dataset**
+This task consists of transforming the dataset to a shape that can be used with a machine learning model. Considerations to make are:
+* What do you want to predict?
+* What kind of machine learning model do you see fit for this problem?
+
+_A suggestion is to look at a machine learning model that tries to predict future ```event_points``` and look at data on a ```gameweek``` level._
+
+**In short this task requires that:**
+
+1. Decide on which columns (for starters) to proceed with and do transformations on.
+   1. The recommended are marked in [```data_desc/data_desc.json```](data_desc/data_desc.json) with either ```keep``` or ```engineer```.  **Feel free to include more**
+2. In the file [```fpl/transform/transformations.py```](fpl/transform/transformations.py) implement methods to transform the data.
+   1. We need at least a function to handle columns with cumulative values (like ```minutes```)
+   2. We need a function that adds a target value (future ```event_points```) is a candidate.
+   3. We need a way to join ```elements``` data with ```teams``` data.
+3. Sow everything together in a jupyter notebook.

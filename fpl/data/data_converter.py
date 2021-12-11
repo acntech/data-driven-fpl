@@ -46,34 +46,56 @@ class DataConverter:
 
         return gameweek[0]["id"] if gameweek else 0
 
+    def _find_json(self):
+        """Find json files.
+
+        Recurivley searches for directories containing the name fpl-data. If None are found
+        it returns the basepath as a list.
+
+        Returns:
+            list: List of folders to read .json from.
+        """
+        return sorted(
+            [folder for folder in self.__raw_data_path.iterdir() if "fpl-data" in folder.name]
+        ) or [self.__raw_data_path]
+
     def convert_json_to_csv_on_entity(self):
         """Convert multiple JSON into csv according to selected entity."""
-        files = sorted([file for file in self.__raw_data_path.rglob("*") if file.suffix == ".json"])
+        fpl_data_dirs = self._find_json()
 
         self._make_interim_folder_if_absent()
-
-        for i, path in enumerate(tqdm(files, desc="Loading CSV")):
-            try:
-                with open(path, encoding="utf-8") as file:
-                    data = json.load(file)
-                    gameweek = self._get_game_week(data)
-                    list(
-                        map(
-                            lambda x, data=data, gameweek=gameweek: x.update(
-                                {"download_time": data["download_time"], "gameweek": gameweek}
-                            ),
-                            data[self.entity],
-                        )
-                    )
-                dataframe = pd.DataFrame(data[self.entity])
-                dataframe.to_csv(
-                    self._interim_data_entity_path,
-                    mode="w" if i == 0 else "a",
-                    index=False,
-                    header=(i == 0),
+        for i, folder in enumerate(tqdm(fpl_data_dirs, desc="Loading CSV")):
+            for y, path in enumerate(
+                tqdm(
+                    sorted([file for file in folder.iterdir() if file.suffix == ".json"]),
+                    leave=False,
                 )
+            ):
+                try:
+                    with open(path, encoding="utf-8") as file:
+                        data = json.load(file)
+                        gameweek = self._get_game_week(data)
+                        list(
+                            map(
+                                lambda x, data=data, gameweek=gameweek: x.update(
+                                    {
+                                        "download_time": data["download_time"],
+                                        "gameweek": gameweek,
+                                        "season": i,
+                                    }
+                                ),
+                                data[self.entity],
+                            )
+                        )
+                    dataframe = pd.DataFrame(data[self.entity])
+                    dataframe.to_csv(
+                        self._interim_data_entity_path,
+                        mode="w" if (i == y == 0) else "a",
+                        index=False,
+                        header=(i == y == 0),
+                    )
 
-            except TypeError as e:
-                print(f"Something is wrong in file {path}:", e)
-            except json.JSONDecodeError:
-                print(f"Something is wrong with JSON formatting in file {path}")
+                except TypeError as e:
+                    print(f"Something is wrong in file {path}:", e)
+                except json.JSONDecodeError:
+                    print(f"Something is wrong with JSON formatting in file {path}")
