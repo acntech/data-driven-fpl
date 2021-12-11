@@ -1,0 +1,61 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "WP-3: Convert CSV to Parquet",
+  "steps": [
+    {
+      "file": "fpl/data/make_parquet.py",
+      "description": "**Function that converts a large csv file into parquet**  \nThis function can read really large _csv-files_ and convert them to parquet by:\n* only loading a fixed number of lines from the csv-file into memory at a time\n* adding this chunk as one or several parquet files to a parquet-dataset\n\nIn short we use ```pandas.read_csv()``` and specify a number of maximum lines to read at a time. This creates a generator object that we can use in a for-loop.  \nWe load each chunk of the dataset into memory and write it back as new parquet-file in the output directory.   \nRead more about generator-objects here: [Introduction to python generators](https://realpython.com/introduction-to-python-generators/) ",
+      "line": 38,
+      "selection": {
+        "start": {
+          "line": 38,
+          "character": 1
+        },
+        "end": {
+          "line": 54,
+          "character": 1
+        }
+      },
+      "title": "Incremental loading of CSV file into memory"
+    },
+    {
+      "file": "fpl/data/make_parquet.py",
+      "description": "**Writing data to parquet**  \nThis function writes a new piece of data to a parquet dataset. As parquet-files are immutable the only way to expand the dataset is to add new files to it. Each chunk read into memory will therefore be a new file in the dataset. \nFurther each chunk can be partitioned into logical subsets by specifying ```partition_columns```. This will divide the chunk on the unique values found in that particular column. [Smart partitioning](https://stackoverflow.com/a/49706535/13640983) will increase read speed alot as only a subset of the dataset will have to be loaded.  \n\nThe following example shows how ```hive``` partitioning on the column ```team_code``` would look. The dataset is read in three chunks. _Notice_ there are _3_ files in the partition directory, one for each chunk loaded into memory by ```csv_to_parquet```. \n\n```bash\npath/to/parquet_dataset\n├── team_code=1\n│   ├── 059aff83-25e0-4d6b-b3a9-df0a29047aeb-0\n│   ├── 4fcb6a1e-f411-4289-9dea-6c00a8deba07-0\n│   └── b140eff1-1374-490f-bfea-5f4e5efe9e2f-0\n└── team_code=n\n    ├── ....................\n    ├── ....................\n    └── ....................\n\n```\nReference: [Pyarrow Tabular Datasets](https://arrow.apache.org/docs/python/dataset.html)",
+      "line": 19,
+      "title": "Write data from memory back to disk"
+    },
+    {
+      "file": "tests/data/test_make_parquet.py",
+      "description": "**Test csv_to_parquet**\n\nWe test csv_to_parquet works as expected. In short we:\n1. Create a temporary output location using pytests [tmpdir fixture](https://click.palletsprojects.com/en/8.0.x/) which creates a temporary directory that will be removed when test finishes.\n2. We run our ```csv_to_parquet()``` function with ```chunk_size``` so the test dataset is read in two chunks and assert that:\n   1. The number of directories in output location correspond to expected after partitioning.\n   2. Assert that the first partition directory has exactly two files in it. \n   3. Assert that values used for partition are in the dataset when loaded again. Ref [Partition in dataset](https://github.com/apache/arrow/issues/11826)",
+      "line": 10,
+      "title": "Test csv_to_parquet()"
+    },
+    {
+      "file": "fpl/cli.py",
+      "description": "**Cli entry point**\nThis defines the CLI entry point for the function. In short this function will accept the options:\n* ```--input``` - which should point to a csv-dataset.\n* ```--output``` - which points to the place where the root directory of the parquet dataset will be placed.\n* ```--chunk-size``` - which specifies number of lines to read.\n* ```--force``` - an option to override an existing dataset by first deleting the old then writing a new. \n\n We can now call it from the command line by typing in the terminal:\n```bash\nfantasy csv-to-parquet\n```\n\nRefrence: [click command line library](https://click.palletsprojects.com/en/8.0.x/)",
+      "line": 72,
+      "title": "Make parquet command line interface"
+    },
+    {
+      "file": "tests/cli/test_parquet_cli.py",
+      "description": "**Test csv-to-parquet CLI**\n\nThis module contains tests that are linked to the cli for ```csv-to-parquet```. In short we do:\n1. Use click [CLI runner](https://click.palletsprojects.com/en/8.0.x/testing/) to invoke the command line.\n2. Use [monkeypatch](https://docs.pytest.org/en/6.2.x/monkeypatch.html) to intercept and replace the call to ```csv_to_parquet``` with ```_mock_csv_to_parquet```\n   1. We record the arguments passed to ```_mock_csv_to_parquet``` in the ```Recorder``` class for easy asserting what has been passed by click.  \n3. Use monkeypatch to _change_ the root directory of the call and a custom fixture tmp_root to set up files needed in root. \n4. We test 3 different senarios of using the cli:\n   1. Where no parquet dataset is found in the output location.\n   2. Where a parquet dataset is found in the output location.\n   3. Where we change all arguments from default values to custom values. ",
+      "line": 1
+    },
+    {
+      "file": "fpl/utils/helpers.py",
+      "description": "**Bonus - decorator functions**  \nThis function can be added in front of function definitions using the @-notation.  \nIn short this function print the execution time of the function it wraps.  \nRead up on decorators [Python decorators](https://realpython.com/primer-on-python-decorators/)",
+      "line": 5,
+      "selection": {
+        "start": {
+          "line": 5,
+          "character": 1
+        },
+        "end": {
+          "line": 6,
+          "character": 1
+        }
+      },
+      "title": "Bonus: Python decorators"
+    }
+  ]
+}

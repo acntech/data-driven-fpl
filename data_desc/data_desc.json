@@ -688,7 +688,7 @@
             "description": null,
             "type": null,
             "dtype": "integer",
-            "calculated": "null",
+            "calculated": null,
             "action": "keep",
             "notes": null
         },
