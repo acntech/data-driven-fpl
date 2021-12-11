@@ -1,0 +1,48 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "WP-3: Transformations",
+  "steps": [
+    {
+      "file": "fpl/transform/transformations.py",
+      "description": "**Calculate diff**  \nThe dataset we work with consist of alot of columns where the values are cumulative, i.e we get:\n* The total amount of minutes played so far this season\n* The total accumulated creativity score\n* The total amount of goals or assists provided\n* ...and many more\n\nFurther the values are updated (for the most part) for each gameweek. We therefore could try to calculate the difference in value between gameweek n and n-1.\nTo do this we utlize two pandas functions:\n* [Pandas GroupBy](pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.groupby.html) which \"groups\" data on certain values with an aggregate function.  \n* [Pandas Diff](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.diff.html) which calculate the difference between sucessive rows. \n\nLets have a closer look!",
+      "line": 6,
+      "title": "Calculate diff 1."
+    },
+    {
+      "file": "fpl/transform/transformations.py",
+      "description": "**Ensure that passed dataframe is grouped**  \nWe first ensure that the passed dataframe is in fact grouped on ```code``` and ```gameweek```. If not we we group it and select the last row in each group. ",
+      "line": 21,
+      "title": "Calculate diff 2."
+    },
+    {
+      "file": "fpl/transform/transformations.py",
+      "description": "**Groupby with diff**\nWe then calculate the diff by using groupby again, however this time we group only on ```code```. This splits our dataset nicely into parts belonging to each player.  \nThis is another way to use [pandas.groupby](https://stackoverflow.com/a/48348006/13640983).  \nNote that we also:\n1. Filter away values for gameweek 0. These values are either _0_ for new players or total sum from players featured in previous FPL seasons. \n2. Fill NaN with original data. When diffing the first row will be NaN as it has no row previous row to diff with. ",
+      "line": 22,
+      "title": "Calculate diff 3. "
+    },
+    {
+      "file": "fpl/transform/transformations.py",
+      "description": "**Add target value**\nThis function adds a target value to the dataset by summing values ahead of time. We pass:\n* ```target``` to specify which column to calculate target from. \n* ```window``` to specify how many future records to sum up for the target.",
+      "line": 28,
+      "title": "Add target value 1."
+    },
+    {
+      "file": "fpl/transform/transformations.py",
+      "description": "**Roll a window on a dataframe in reverse order**  \nTo calculate future values we use [Pandas rolling](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html?highlight=rolling). \nIn short we:\n1. [Reverse the \"dataframe\"](https://stackoverflow.com/a/22820689/13640983) with the notation ```[::-1]```. This is because the \"rolling\" window does not look ahead, it looks behind.\n2. Utilize ```pandas.GroupBy``` to group values on ```code```\n3. Roll our window over the dataset using ```DataFrame.rolling()```, and calculate the ```DataFrame.sum()```. \n4. Use [DataFrame.shift()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.shift.html) to shift the result by 1\n\n_Note: if someone knows how to make a window look ahead in time please let know_",
+      "line": 38,
+      "title": "Add target value 2. "
+    },
+    {
+      "file": "fpl/transform/transformations.py",
+      "description": "**Join elements and teams datasets**  \nThis transformation joins values from our _elements_ dataset and _teams_ dataset.  \nHere we use [pandas.DataFrame.join](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.join.html) To sow our datasets together.  \n\nIn short we:\n1. Ensure that our datasets are grouped on the same columns. Here ```code``` and ```gameweek``` \n2. Join our data on the keys ```code``` and ```gameweek```. Note that the df joind (here _teams_df_) must have the columns to join on as index. \n   1. We suffix columns with identical names with \"_team\" which are appended to columns comming from the _teams_df_",
+      "line": 46,
+      "title": "Join elements and teams"
+    },
+    {
+      "file": "tests/transform/test_transformations.py",
+      "description": "**Test the add_target_value function**  \nHere we test our function together with [pytest.mark.parameterize](https://docs.pytest.org/en/6.2.x/parametrize.html#parametrizemark) to run our test with a few different values. ",
+      "line": 32,
+      "title": "Test transformations"
+    }
+  ]
+}

@@ -569,7 +569,7 @@
             "type": null,
             "dtype": "integer",
             "calculated": null,
-            "action": null,
+            "action": "keep",
             "notes": null
         },
         "draw": {
@@ -649,7 +649,7 @@
             "type": null,
             "dtype": "integer",
             "calculated": null,
-            "action": null,
+            "action": "keep",
             "notes": null
         },
         "team_division": {
