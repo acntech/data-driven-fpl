@@ -4,6 +4,7 @@
         "ms-python.python",
         "njpwerner.autodocstring",
         "mhutchie.git-graph",
-        "gruntfuggly.todo-tree"
+        "gruntfuggly.todo-tree",
+        "vsls-contrib.codetour"
     ]
 }
