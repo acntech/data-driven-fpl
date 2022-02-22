@@ -9,11 +9,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: postgres
-    deploy:
-      resources:
-        limits:
-          cpus: '0.01'
-          memory: 256M
     restart: unless-stopped
 
   # Minio to mock AWS S3 - can be accessed by going to 127.0.0.1:9000 in browser
@@ -29,11 +24,6 @@ services:
     ports:
       - 9000:9000
       - 9001:9001
-    deploy:
-      resources:
-        limits:
-          cpus: '0.01'
-          memory: 256M
     restart: unless-stopped
 
   # Run setup commands on MiniIO.
@@ -61,11 +51,6 @@ services:
       - MLFLOW_S3_IGNORE_TLS=true
     ports:
       - 5000:5000
-    deploy:
-      resources:
-        limits:
-          cpus: '0.01'
-          memory: 256M
     restart: unless-stopped
     depends_on:
       - s3

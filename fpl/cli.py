@@ -6,9 +6,15 @@ from pathlib import Path
 import click
 
 from fpl.data import BlobImporter, DataConverter, csv_to_parquet
+from fpl.pipeline.experiment import experiment
 
 
-@click.group()
+@click.group(help="The FPL CLI!")
+def root():
+    """Root cli."""
+
+
+@click.group(help="Data operation.")
 def data():
     """CLI group."""
 
@@ -89,3 +95,14 @@ def to_parquet(input_path, output_path, chunk_size, partition_columns, force):
     csv_to_parquet(
         input_path, output_path, chunk_size=chunk_size, partition_columns=partition_columns
     )
+
+
+@click.group(name="pipe", help="Pipeline operations.")
+def pipe():
+    """Experiment group."""
+
+
+@pipe.command(name="experiment", help="Run experiment pipeline")
+def run_experiment():
+    """Experiment entry."""
+    experiment()

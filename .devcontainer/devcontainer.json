@@ -7,18 +7,18 @@
 	"service": "app",
 	"workspaceFolder": "/workspace",
 	// Set *default* container specific settings.json values on container create.
-	"settings": {
-		"python.defaultInterpreterPath": "/usr/local/bin/python",
-		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
-		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-		"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
-		"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
-		"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
-		"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
-		"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
-		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
-		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint"
-	},
+	// "settings": {
+	// 	"python.defaultInterpreterPath": "/usr/local/bin/python",
+	// 	"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+	// 	"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+	// 	"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+	// 	"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
+	// 	"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+	// 	"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
+	// 	"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
+	// 	"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
+	// 	"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint"
+	// },
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.python",
@@ -36,10 +36,11 @@
 	"remoteUser": "vscode",
 	"remoteEnv": {
 		"PATH": "${containerEnv:PATH}:/home/vscode/.local/bin",
-		"MLFLOW_S3_ENDPOINT_URL": "http://minio:9000",
+		"MLFLOW_S3_ENDPOINT_URL": "http://s3:9000",
 		"AWS_ACCESS_KEY_ID": "access",
 		"AWS_SECRET_ACCESS_KEY": "secret123",
 		"AWS_DEFAULT_REGION": "us-east-1",
-		"MLFLOW_S3_IGNORE_TLS": "true"
+		"MLFLOW_S3_IGNORE_TLS": "true",
+		"MLFLOW_URL": "http://mlflow:5000"
 	}
 }

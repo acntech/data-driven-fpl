@@ -13,7 +13,7 @@ services:
     volumes:
       - .:/workspace:cached # Shared workspace between host and devcontainer
       - extensions:/home/vscode/.vscode-server/extensions # Storing extensions
-      - zhistory:/home/vscode/.zsh_history # Persistant command line history
+      - zhistory:/home/vscode/commandhistory # Persistant command line history
       - cache:/home/vscode/.cache # Caching poetry/pip wheels
 
     # Overrides default command so things don't shut down after the process ends.
