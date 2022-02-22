@@ -1,15 +1,11 @@
 {
 	"name": "Python 3",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": "..",
-		"args": {
-			// Update 'VARIANT' to pick a Python version: 3, 3.9, 3.8, 3.7, 3.6.
-			// Append -bullseye or -buster to pin to an OS version.
-			// Use the -bullseye variants if you are on a M1 mac.
-			"VARIANT": "3.9-bullseye",
-		}
-	},
+	"dockerComposeFile": [
+		"../docker-compose.yaml",
+		"docker-compose.yaml"
+	],
+	"service": "app",
+	"workspaceFolder": "/workspace",
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -38,12 +34,12 @@
 	"postCreateCommand": "sh .devcontainer/postCreateCommand.sh",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode",
-	"mounts": [
-		// For multipe containers, source should have a unique value to prohibit bugs across OS/env
-		// setups. Else volume will be shared across containers.
-		"source=unique-vol-name-here,target=/home/vscode/.vscode-server/extensions,type=volume",
-	],
 	"remoteEnv": {
 		"PATH": "${containerEnv:PATH}:/home/vscode/.local/bin",
+		"MLFLOW_S3_ENDPOINT_URL": "http://minio:9000",
+		"AWS_ACCESS_KEY_ID": "access",
+		"AWS_SECRET_ACCESS_KEY": "secret123",
+		"AWS_DEFAULT_REGION": "us-east-1",
+		"MLFLOW_S3_IGNORE_TLS": "true"
 	}
 }

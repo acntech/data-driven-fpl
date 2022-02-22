@@ -1,0 +1,76 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '0.01'
+          memory: 256M
+    restart: unless-stopped
+
+  # Minio to mock AWS S3 - can be accessed by going to 127.0.0.1:9000 in browser
+  s3:
+    image: minio/minio:latest
+    container_name: minio-s3
+    command: server /data --address=:9000 --console-address=:9001
+    volumes:
+      - minio-data:/data
+    environment:
+      MINIO_ROOT_USER: access
+      MINIO_ROOT_PASSWORD: secret123
+    ports:
+      - 9000:9000
+      - 9001:9001
+    deploy:
+      resources:
+        limits:
+          cpus: '0.01'
+          memory: 256M
+    restart: unless-stopped
+
+  # Run setup commands on MiniIO.
+  createbuckets:
+    image: minio/mc
+    container_name: minio-mc
+    entrypoint: >
+      /bin/sh -c " until (/usr/bin/mc config host add myminio http://s3:9000 access secret123) do echo '...waiting...' && sleep 1; done; /usr/bin/mc rm -r --force myminio/data; /usr/bin/mc mb myminio/artifacts; /usr/bin/mc policy set public myminio/artifacts; exit 0; "
+    depends_on:
+      - mlflow
+      - s3
+    # Mlflow server - can be accessed from browser on 127.0.0.1:5000
+  mlflow:
+    image: mlflow_server:latest
+    container_name: mlflow-server
+    build:
+      context: .
+      dockerfile: Dockerfile.flow
+    command: mlflow server --backend-store-uri postgresql://postgres:postgres@db:5432/postgres --default-artifact-root s3://artifacts --host 0.0.0.0
+    environment:
+      - MLFLOW_S3_ENDPOINT_URL=http://s3:9000
+      - AWS_ACCESS_KEY_ID=access
+      - AWS_SECRET_ACCESS_KEY=secret123
+      - AWS_DEFAULT_REGION=us-east-1
+      - MLFLOW_S3_IGNORE_TLS=true
+    ports:
+      - 5000:5000
+    deploy:
+      resources:
+        limits:
+          cpus: '0.01'
+          memory: 256M
+    restart: unless-stopped
+    depends_on:
+      - s3
+      - db
+
+volumes:
+  postgres-data:
+  minio-data:

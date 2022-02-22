@@ -135,3 +135,6 @@ dmypy.json
 
 # Ignore ipython notebooks (only check in .md through jupytext)
 *.ipynb
+
+# docker
+.docker

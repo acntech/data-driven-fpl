@@ -134,3 +134,6 @@ _A suggestion is to look at a machine learning model that tries to predict futur
    2. We need a function that adds a target value (future ```event_points```) is a candidate.
    3. We need a way to join ```elements``` data with ```teams``` data.
 3. Sow everything together in a jupyter notebook.
+
+
+## **Waypoint 3: Setting up an input pipeline for our dataset**

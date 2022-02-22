@@ -1,0 +1,6 @@
+# MLFLOW server container
+
+FROM python:3.9-slim-bullseye
+# Install python packages
+RUN python -m pip install --upgrade pip
+RUN pip install mlflow==1.23.1 boto3 psycopg2-binary
